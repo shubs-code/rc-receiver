@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.google.dagger.hilt.android")
     kotlin("kapt")
@@ -71,6 +72,13 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-compiler:2.51.1")
+
+    implementation("androidx.compose.material:material-icons-extended:1.6.7")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+
+    implementation("com.google.android.gms:play-services-location:21.2.0")
+
+    implementation("com.github.mik3y:usb-serial-for-android:3.8.1")
 }
 kapt {
     correctErrorTypes = true
