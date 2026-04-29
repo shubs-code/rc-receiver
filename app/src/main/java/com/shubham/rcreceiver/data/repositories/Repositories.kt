@@ -1,5 +1,6 @@
 package com.shubham.rcreceiver.data.repositories
 
+import android.util.Log
 import com.shubham.rcreceiver.data.local.SerialPortDataSource
 import com.shubham.rcreceiver.data.remote.UDPDataSource
 import com.shubham.rcreceiver.data.sensor.SensorDataCollector
@@ -11,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -28,6 +30,7 @@ class TelemetryRepositoryImpl @Inject constructor(
             udpDataSource.signalFlow.stateIn(CoroutineScope(Dispatchers.Default)),
             serialDataSource.serialDataFlow.stateIn(CoroutineScope(Dispatchers.Default))
         ) { sensor, signal, serial ->
+            Log.d("getTelemetryStream", "Serial data received")
             if (sensor != null) {
                 TelemetryData(
                     sensorData = sensor,

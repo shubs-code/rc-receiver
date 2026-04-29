@@ -26,9 +26,18 @@ class SensorDataCollector @Inject constructor(
 ) {
     private var fusedLocationListener: LocationCallback? = null
     private var compassListener: SensorEventListener? = null
-    
-    private val _sensorDataFlow = MutableStateFlow<SensorData?>(null)
-    val sensorDataFlow: StateFlow<SensorData?> = _sensorDataFlow.asStateFlow()
+
+    private val _sensorDataFlow = MutableStateFlow(
+        SensorData(
+            latitude = 0.0,
+            longitude = 0.0,
+            altitude = 0.0,
+            bearing = 0f,
+            accuracy = 0f,
+            speed = 0f
+        )
+    )
+    val sensorDataFlow: StateFlow<SensorData> = _sensorDataFlow.asStateFlow()
     
     fun startCollecting() {
         try {
@@ -92,7 +101,7 @@ class SensorDataCollector @Inject constructor(
                     SensorManager.getOrientation(rotationMatrix, orientations)
                     
                     val bearing = Math.toDegrees(orientations[0].toDouble()).toFloat()
-                    _sensorDataFlow.value = _sensorDataFlow.value?.copy(
+                    _sensorDataFlow.value = _sensorDataFlow.value.copy(
                         bearing = if (bearing < 0) bearing + 360 else bearing
                     )
                 }

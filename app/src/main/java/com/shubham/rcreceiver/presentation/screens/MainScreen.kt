@@ -1,5 +1,6 @@
 package com.shubham.rcreceiver.presentation.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,7 +42,8 @@ fun MainScreen(
 ) {
     val isConnected = viewModel.isConnected.collectAsState().value
     val errorMessage = viewModel.errorMessage.collectAsState().value
-    
+    Log.d("Mainscreen", "In main Mainscreen")
+
     LaunchedEffect(Unit) {
         viewModel.initializeConnections()
     }

@@ -36,8 +36,11 @@ class SerialPortDataSource @Inject constructor(
 
     private var readJob: kotlinx.coroutines.Job? = null
 
-    private val _serialDataFlow = MutableSharedFlow<ByteArray>(extraBufferCapacity = 10)
-    val serialDataFlow: SharedFlow<ByteArray> = _serialDataFlow.asSharedFlow()
+    private val _serialDataFlow =
+        MutableStateFlow(ByteArray(0))
+
+    val serialDataFlow: StateFlow<ByteArray> =
+        _serialDataFlow.asStateFlow()
 
     private val _connectionStatusFlow = MutableStateFlow(false)
     val connectionStatusFlow: StateFlow<Boolean> = _connectionStatusFlow.asStateFlow()

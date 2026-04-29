@@ -7,7 +7,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -22,10 +24,10 @@ class UDPDataSource @Inject constructor(
 ) {
     private var udpSocket: DatagramSocket? = null
     private var receiverJob: Job? = null
-    
-    private val _signalFlow = MutableSharedFlow<String>()
-    val signalFlow: SharedFlow<String> = _signalFlow.asSharedFlow()
-    
+
+    private val _signalFlow = MutableStateFlow("")
+    val signalFlow: StateFlow<String> = _signalFlow
+
     fun startListening(port: Int = 5000) {
         receiverJob = CoroutineScope(Dispatchers.IO).launch {
             try {
