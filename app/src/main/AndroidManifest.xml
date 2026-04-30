@@ -13,6 +13,8 @@
     <uses-feature
         android:name="android.hardware.usb.host"
         android:required="true" />
+    <!-- Add this permission -->
+    <uses-permission android:name="android.permission.USB_PERMISSION" />
 
     <!-- Sensors -->
     <uses-feature
@@ -45,7 +47,47 @@
             </intent-filter>
 
         </activity>
+        <!-- ✅ USB DEVICE RECEIVER - System-Integrated -->
+        <!-- This receiver automatically gets system permission dialogs -->
+        <receiver
+            android:name="com.shubham.rcreceiver.receivers.UsbDeviceReceiver"
+            android:exported="true">
+            <!-- Listen for device attach/detach -->
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+                <action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" />
+            </intent-filter>
+            <!-- Link to device filter - tells Android which devices we support -->
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
+        </receiver>
 
+        <!-- ✅ USB PERMISSION REQUEST RECEIVER -->
+        <!-- Handles user's response to permission dialog -->
+        <receiver
+            android:name="com.shubham.rcreceiver.receivers.UsbPermissionReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.shubham.rcreceiver.USB_PERMISSION" />
+            </intent-filter>
+        </receiver>
+
+        <!-- ✅ OPTIONAL: Activity to handle USB device directly -->
+        <!-- This makes app appear in system's "Open with" menu for USB devices -->
+        <activity-alias
+            android:name="com.shubham.rcreceiver.UsbDeviceActivity"
+            android:targetActivity="com.shubham.rcreceiver.presentation.MainActivity"
+            android:exported="true">
+            <!-- Intent filter for USB devices matching our filter -->
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <!-- Link to device filter -->
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
+        </activity-alias>
     </application>
 
 </manifest>

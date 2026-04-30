@@ -30,7 +30,6 @@ class TelemetryRepositoryImpl @Inject constructor(
             udpDataSource.signalFlow.stateIn(CoroutineScope(Dispatchers.Default)),
             serialDataSource.serialDataFlow.stateIn(CoroutineScope(Dispatchers.Default))
         ) { sensor, signal, serial ->
-            Log.d("getTelemetryStream", "Serial data received")
             if (sensor != null) {
                 TelemetryData(
                     sensorData = sensor,

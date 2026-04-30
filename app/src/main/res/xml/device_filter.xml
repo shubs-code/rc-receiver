@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    USB Device Filter
+    Tells Android which USB devices this app supports
+    When a matching device is plugged in, system shows permission dialog automatically
+-->
+<resources>
+    <!-- ===== CH340 Family ===== -->
+    <!-- CH340 - Most common, cheap USB-to-Serial adapters -->
+    <usb-device
+        vendor-id="0x1a86"
+        product-id="0x7523" />
+
+    <!-- CH341A -->
+    <usb-device
+        vendor-id="0x1a86"
+        product-id="0x5523" />
+
+    <!-- CH9328 -->
+    <usb-device
+        vendor-id="0x1a86"
+        product-id="0x55d3" />
+
+    <!-- ===== CP2102 Family ===== -->
+    <!-- CP2102 - Quality USB-to-Serial, common on development boards -->
+    <usb-device
+        vendor-id="0x10c4"
+        product-id="0xea60" />
+
+    <!-- CP2102N -->
+    <usb-device
+        vendor-id="0x10c4"
+        product-id="0xea70" />
+
+    <!-- CP2105 (Dual channel) -->
+    <usb-device
+        vendor-id="0x10c4"
+        product-id="0xea71" />
+
+    <!-- CP2108 (Quad channel) -->
+    <usb-device
+        vendor-id="0x10c4"
+        product-id="0xea73" />
+
+    <!-- CP2112 (HID) -->
+    <usb-device
+        vendor-id="0x10c4"
+        product-id="0xea90" />
+
+    <!-- ===== FTDI (Future Technology Devices International) ===== -->
+    <!-- FT232RL - Professional USB-to-Serial -->
+    <usb-device
+        vendor-id="0x0403"
+        product-id="0x6001" />
+
+    <!-- FT232H -->
+    <usb-device
+        vendor-id="0x0403"
+        product-id="0x6014" />
+
+    <!-- FT4232H (Quad channel) -->
+    <usb-device
+        vendor-id="0x0403"
+        product-id="0x6011" />
+
+    <!-- FT2232H (Dual channel) -->
+    <usb-device
+        vendor-id="0x0403"
+        product-id="0x6010" />
+
+    <!-- FT232B -->
+    <usb-device
+        vendor-id="0x0403"
+        product-id="0x6001" />
+
+    <!-- ===== Prolific PL2303 ===== -->
+    <!-- PL2303 - Older but still common -->
+    <usb-device
+        vendor-id="0x067b"
+        product-id="0x2303" />
+
+    <!-- PL2305 -->
+    <usb-device
+        vendor-id="0x067b"
+        product-id="0x2305" />
+
+    <!-- ===== Arduino ===== -->
+    <!-- Arduino Uno (ATmega328 + FTDI) -->
+    <usb-device
+        vendor-id="0x2341"
+        product-id="0x0043" />
+
+    <!-- Arduino Mega (ATmega2560 + FTDI) -->
+    <usb-device
+        vendor-id="0x2341"
+        product-id="0x0010" />
+
+    <!-- Arduino Leonardo (ATmega32U4 - built-in USB) -->
+    <usb-device
+        vendor-id="0x2341"
+        product-id="0x8036" />
+
+    <!-- Arduino Zero -->
+    <usb-device
+        vendor-id="0x2341"
+        product-id="0x804d" />
+
+    <!-- Arduino Due -->
+    <usb-device
+        vendor-id="0x2341"
+        product-id="0x003d" />
+
+    <!-- Arduino MKR WiFi 1010 -->
+    <usb-device
+        vendor-id="0x2341"
+        product-id="0x80ca" />
+
+    <!-- ===== ESP32 Boards ===== -->
+    <!-- ESP32-DevKitC (uses CH340) -->
+    <usb-device
+        vendor-id="0x1a86"
+        product-id="0x7523" />
+
+    <!-- ESP32-S3 (uses CP2102N) -->
+    <usb-device
+        vendor-id="0x10c4"
+        product-id="0xea70" />
+
+    <!-- ESP32-C3 (built-in USB - CDC-ACM) -->
+    <usb-device
+        vendor-id="0x303a"
+        product-id="0x1001" />
+
+    <!-- ESP32-S2 (built-in USB) -->
+    <usb-device
+        vendor-id="0x303a"
+        product-id="0x0002" />
+
+    <!-- ===== Raspberry Pi Pico ===== -->
+    <!-- Pico (RP2040) -->
+    <usb-device
+        vendor-id="0x2e8a"
+        product-id="0x0004" />
+
+    <!-- Pico W -->
+    <usb-device
+        vendor-id="0x2e8a"
+        product-id="0x1005" />
+
+    <!-- ===== STMicroelectronics ===== -->
+    <!-- STM32F103 (Blue Pill with USB bootloader) -->
+    <usb-device
+        vendor-id="0x1eaf"
+        product-id="0x0003" />
+
+    <!-- STM32F407 (Discovery board) -->
+    <usb-device
+        vendor-id="0x0483"
+        product-id="0x374b" />
+
+    <!-- ===== Silicon Labs ===== -->
+    <!-- EFM32 -->
+    <usb-device
+        vendor-id="0x10c4"
+        product-id="0xea60" />
+
+    <!-- ===== Microchip ===== -->
+    <!-- PIC18 -->
+    <usb-device
+        vendor-id="0x04d8"
+        product-id="0x0053" />
+
+    <!-- ===== Generic CDC-ACM (USB Serial) ===== -->
+    <!-- Catches any device that implements CDC-ACM standard -->
+    <!-- Class: 02h (CDC - Communications Device)
+         SubClass: 02h (ACM - Abstract Control Model)
+         Protocol: 01h (V.25ter) -->
+    <!-- Note: Using generic entries can catch many devices -->
+
+    <!-- ===== Generic USB Hub ===== -->
+    <!-- If you connect USB hub with devices -->
+    <usb-device
+        vendor-id="0x0000"
+        product-id="0x0000" />
+
+</resources>

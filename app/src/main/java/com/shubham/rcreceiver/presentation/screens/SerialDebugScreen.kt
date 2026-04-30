@@ -3,6 +3,8 @@ package com.shubham.rcreceiver.presentation.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.ui.unit.dp
 import com.shubham.rcreceiver.presentation.viewmodels.TelemetryViewModel
 
@@ -43,6 +46,7 @@ fun SerialDebugScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(WindowInsets.systemBars.asPaddingValues())
             .padding(16.dp)
     ) {
         Row(
@@ -69,7 +73,13 @@ fun SerialDebugScreen(
                 else
                     MaterialTheme.colorScheme.error,
                 modifier = Modifier.size(12.dp),
-                content = TODO()
+                content = {
+                    Text(
+                        "Some thing went wrong",
+                        style = MaterialTheme.typography.headlineSmall,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             )
         }
         
