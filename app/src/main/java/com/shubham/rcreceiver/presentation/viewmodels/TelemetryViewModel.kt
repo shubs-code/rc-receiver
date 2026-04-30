@@ -3,6 +3,7 @@ package com.shubham.rcreceiver.presentation.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shubham.rcreceiver.data.remote.UDPDataSource
 import com.shubham.rcreceiver.data.repositories.SensorRepositoryImpl
 import com.shubham.rcreceiver.data.repositories.SerialRepositoryImpl
 import com.shubham.rcreceiver.data.repositories.TelemetryRepositoryImpl
@@ -18,7 +19,8 @@ import javax.inject.Inject
 class TelemetryViewModel @Inject constructor(
     private val telemetryRepository: TelemetryRepositoryImpl,
     private val sensorRepository: SensorRepositoryImpl,
-    private val serialRepository: SerialRepositoryImpl
+    private val serialRepository: SerialRepositoryImpl,
+    val udpDataSource: UDPDataSource
 ) : ViewModel() {
     
     private val _telemetryData = MutableStateFlow<TelemetryData?>(null)
@@ -69,6 +71,7 @@ class TelemetryViewModel @Inject constructor(
                 _isConnected.value = false
                 sensorRepository.startSensorCollection()
                 serialRepository.connectToESP32()
+                udpDataSource.startListening()
                 startTelemetryCollection()
                 _isInitialized.value = true
                 Log.d("TelemetryViewModel", "Connections initialized")
