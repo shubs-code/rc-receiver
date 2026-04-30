@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.unit.dp
 import com.shubham.rcreceiver.presentation.viewmodels.TelemetryViewModel
 
@@ -42,7 +43,19 @@ fun SerialDebugScreen(
 ) {
     val serialLogs = remember { mutableStateOf(listOf<String>()) }
     val isConnected = viewModel.isConnected.collectAsState().value
-    
+    val telemetryData = viewModel.telemetryData.collectAsState().value
+
+    LaunchedEffect(telemetryData?.esp32Data?.payload) {
+        val utfPayload = try {
+            telemetryData?.esp32Data?.payload?.toString(Charsets.UTF_8)
+        } catch (e: Exception) {
+            "Invalid UTF-8"
+        }
+
+        val log = "$utfPayload"
+
+        serialLogs.value = serialLogs.value + log
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -128,11 +141,6 @@ fun LogEntry(log: String) {
             .padding(4.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(
-            text = "→",
-            modifier = Modifier.padding(top = 2.dp),
-            color = MaterialTheme.colorScheme.primary
-        )
         
         Text(
             text = log,

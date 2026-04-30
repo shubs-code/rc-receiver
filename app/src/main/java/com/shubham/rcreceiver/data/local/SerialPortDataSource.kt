@@ -284,17 +284,28 @@ class SerialPortDataSource @Inject constructor(
 
         readJob = scope.launch {
             val buffer = ByteArray(4096)
+            val stringBuffer = StringBuilder()
 
             while (isActive && serialPort != null) {
                 try {
                     val count = serialPort?.read(buffer, 1000) ?: 0
-
                     if (count > 0) {
-                        val data = buffer.copyOfRange(0, count)
-                        _serialDataFlow.emit(data)
-                        Log.d(TAG, "📥 Received ${data.size} bytes")
-                    }
+                        val chunk = buffer.copyOfRange(0, count)
+                        val text = chunk.toString(Charsets.UTF_8)
 
+                        // Append to buffer
+                        stringBuffer.append(text)
+
+                        // Process complete lines
+                        var index: Int
+                        while (stringBuffer.indexOf("\n").also { index = it } != -1) {
+                            val line = stringBuffer.substring(0, index).trim()
+                            stringBuffer.delete(0, index + 1)
+
+                            Log.d(TAG, "$line")
+                            _serialDataFlow.emit(line.toByteArray())
+                        }
+                    }
                 } catch (e: Exception) {
                     Log.e(TAG, "Read error: ${e.message}", e)
                     _connectionStatusFlow.value = false
