@@ -24,11 +24,11 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
     
-    @Singleton
-    @Provides
-    fun provideUDPDataSource(
-        @ApplicationContext context: Context
-    ): UDPDataSource = UDPDataSource(context)
+//    @Singleton
+//    @Provides
+//    fun provideUDPDataSource(
+//        @ApplicationContext context: Context
+//    ): UDPDataSource = UDPDataSource(context)
     
     @Singleton
     @Provides
