@@ -172,7 +172,7 @@ class UDPDataSource @Inject constructor(
                         _signalFlow.emit(message)
 
                         // Process command
-//                        processCommand(message, senderIP, senderPort)   // do something later on
+                        processCommand(message, senderIP, senderPort)   // do something later on
 
                     } catch (e: SocketException) {
                         if (isActive) {

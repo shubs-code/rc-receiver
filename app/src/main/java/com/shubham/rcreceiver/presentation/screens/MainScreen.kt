@@ -31,12 +31,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.shubham.rcreceiver.presentation.viewmodels.TelemetryViewModel
+import com.shubham.rcreceiver.utils.NetworkUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
 fun MainScreen(
@@ -46,8 +51,12 @@ fun MainScreen(
     val isConnected = viewModel.isConnected.collectAsState().value
     val errorMessage = viewModel.errorMessage.collectAsState().value
     Log.d("Mainscreen", "In main Mainscreen")
+    val ipv6Addresses = remember { mutableStateOf<List<String>>(emptyList()) }
 
     LaunchedEffect(Unit) {
+        ipv6Addresses.value = withContext(Dispatchers.Default) {
+            NetworkUtils.getPublicIPv6Addresses()
+        }
         viewModel.initializeConnections()
     }
     
@@ -59,7 +68,7 @@ fun MainScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = "Telemetry Receiver",
+            text = "RC Receiver",
             style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -67,7 +76,8 @@ fun MainScreen(
         StatusCard(
             title = "System Status",
             isConnected = isConnected,
-            errorMessage = errorMessage
+            errorMessage = errorMessage,
+            ipv6Addresses = ipv6Addresses.value
         )
         
         Spacer(modifier = Modifier.height(8.dp))
@@ -88,7 +98,7 @@ fun MainScreen(
         
         NavigationButton(
             title = "Serial Debug",
-            description = "ESP32 communication logs",
+            description = "Serial communication logs",
             icon = Icons.Default.BugReport,
             onClick = { navController.navigate("serial_debug") }
         )
@@ -110,7 +120,8 @@ fun MainScreen(
 fun StatusCard(
     title: String,
     isConnected: Boolean,
-    errorMessage: String?
+    errorMessage: String?,
+    ipv6Addresses: List<String> = emptyList()
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -121,37 +132,64 @@ fun StatusCard(
                 MaterialTheme.colorScheme.errorContainer
         )
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Icon(
-                imageVector = if (isConnected)
-                    Icons.Default.CheckCircle
-                else
-                    Icons.Default.Error,
-                contentDescription = null,
-                tint = if (isConnected)
-                    MaterialTheme.colorScheme.primary
-                else
-                    MaterialTheme.colorScheme.error
-            )
-            
-            Column {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Text(
-                    text = if (isConnected)
-                        "All systems operational"
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Icon(
+                    imageVector = if (isConnected)
+                        Icons.Default.CheckCircle
                     else
-                        errorMessage ?: "Initializing...",
-                    style = MaterialTheme.typography.bodySmall
+                        Icons.Default.Error,
+                    contentDescription = null,
+                    tint = if (isConnected)
+                        MaterialTheme.colorScheme.primary
+                    else
+                        MaterialTheme.colorScheme.error
                 )
+
+                Column {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Text(
+                        text = if (isConnected)
+                            "All systems operational"
+                        else
+                            errorMessage ?: "Initializing...",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
+
+            if (ipv6Addresses.isNotEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 40.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Text(
+                        text = "IPv6 Addresses:",
+                        style = MaterialTheme.typography.labelSmall
+                    )
+
+                    ipv6Addresses.forEach { address ->
+                        Text(
+                            text = address,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
             }
         }
     }
